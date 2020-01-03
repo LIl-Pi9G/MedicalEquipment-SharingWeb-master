@@ -1,0 +1,48 @@
+﻿@model UserInfoViewModel
+@{
+    ViewData["Title"] = "个人";
+}
+
+<h1>@Model.UserName，您好！</h1>
+<p>
+    <img src="~/SVG/email.svg">
+    <span style="vertical-align:middle">@Model.Email</span>
+</p>
+<p>
+    <img src="~/SVG/phone.svg">
+    <span style="vertical-align:middle">@Model.TelePhone</span>
+</p>
+
+<div class="text-left" style="margin-bottom:20px; margin-top:10px">
+    <h4 style="vertical-align:middle" class="d-inline">账户收益：&yen; @Model.Income.ToString()</h4>
+    @if (Model.Income > 0)
+    {
+        <form class="d-inline" method="post"
+                style="margin-left:8px"
+                asp-controller="Pay" asp-action="Transfer">
+            <button class="btn btn-light" type="submit"
+                    onclick="return confirm('确定要提现吗？')">
+                提现到支付宝
+            </button>
+        </form>
+    }
+</div>
+
+<div class="text-left">
+    <p>
+        <a asp-controller="Equipment" asp-action="Create" class="btn btn-primary">添加共享设备</a>
+        <a asp-controller="Equipment" asp-action="Index" style="margin-left:24px" class="btn btn-outline-primary">我的设备</a>
+    </p>
+    <p>
+        <a asp-controller="Equipment" asp-action="MySharing" class="btn btn-outline-success">正在共享的设备</a>
+        <a asp-controller="Equipment" asp-action="MyBorrow" style="margin-left:24px" class="btn btn-outline-info">正在借用的设备</a>
+    </p>
+    <p>
+        <a asp-controller="Equipment" asp-action="MyPurchase" class="btn btn-outline-danger">我购买的设备</a>
+        <a asp-controller="Equipment" asp-action="MySold" style="margin-left:24px" class="btn btn-outline-danger">我售出的设备</a>
+    </p>
+</div>
+
+<hr />
+<p><a href="/">回到首页</a></p>
+<a asp-controller="Account" asp-action="Logout">登出</a>

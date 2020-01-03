@@ -1,0 +1,88 @@
+﻿@model EquipmentViewModel
+@{
+    ViewData["Title"] = "编辑";
+}
+
+<h1>编辑共享设备</h1>
+@await Component.InvokeAsync(nameof(MedicalEquipment_Sharing.ViewComponents.ShowGratuity))
+
+<div class="d-inline-block" style="float:left; width:50%; margin-bottom:100px">
+    <div class="d-block">
+        <form method="post" enctype="multipart/form-data">
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <h5>
+                    <label asp-for="Name"></label>
+                </h5>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <h5>
+                    <label asp-for="Describe"></label>
+                </h5>
+                <textarea placeholder="描述一下您的设备..." rows="4" asp-for="Describe" class="form-control"></textarea>
+                <span asp-validation-for="Describe" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <h5>
+                    <label asp-for="Price"></label>
+                </h5>
+                <input placeholder="租赁此设备的每天所需要的支付的费用" asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <h5>
+                    <label asp-for="SoldPrice"></label>
+                </h5>
+                <input placeholder="购买此设备的所需要的支付的费用" asp-for="SoldPrice" class="form-control" />
+                <span asp-validation-for="SoldPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <h5>
+                    <label asp-for="OriginalPrice"></label>
+                </h5>
+                <input placeholder="您购买此设备时的价格" asp-for="OriginalPrice" class="form-control" />
+                <span asp-validation-for="OriginalPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <h5>
+                    <label asp-for="Manufacturer"></label>
+                </h5>
+                <select asp-items="Html.GetEnumSelectList(typeof(EquipmentManufacturer))"
+                        asp-for="Manufacturer" class="form-control"></select>
+                <span asp-validation-for="Manufacturer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <h5>
+                    <label asp-for="Type"></label>
+                </h5>
+                <select asp-items="Html.GetEnumSelectList(typeof(EquipmentType))"
+                        asp-for="Type" class="form-control"></select>
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <h5>
+                    <label asp-for="Image"></label>
+                    <span style="margin-left:8px" class="badge badge-pill badge-success">图片不大于3MB</span>
+                </h5>
+                <input asp-for="Image" /><br />
+                <span>更换设备的实物图片</span><br />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+
+            <input asp-for="ImageUrl" hidden />
+
+            <div style="margin-top:50px">
+                <button type="submit" class="btn col-md-4 btn-primary">保存</button>
+                <a asp-action="Index" style="margin-left:20px" class="btn col-md-4 btn-secondary">取消</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="d-inline-block text-center" style="float:right; width:46%; margin-bottom:100px">
+    <img src="@Model.ImageUrl" class="card-img-top" /><br />
+    <span class="text-primary" style="margin-bottom:8px;margin-top:8px;font-size:120%">正在使用的图片</span>
+</div>

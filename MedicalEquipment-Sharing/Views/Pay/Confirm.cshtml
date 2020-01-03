@@ -1,0 +1,46 @@
+﻿@model ConfirmOrderViewModel
+
+@{
+    ViewData["Title"] = "确认订单";
+}
+
+<div class="d-inline-block col-md-8" style="margin-bottom:100px">
+    @if (Model.Type == PayOrderType.Borrow)
+    {
+        <h2>确认订单：借用设备(押金)</h2>
+    }
+    else if (Model.Type == PayOrderType.Sold)
+    {
+        <h2>确认订单：购买设备</h2>
+    }
+
+    <div style="margin-top:10px">
+        <strong>支付金额：</strong>
+        <strong style="font-size:150%" class="text-danger">@(Model.TotalAmount.ToString())</strong>
+        元
+    </div>
+
+    <div style="margin-top:14px; margin-bottom:8px">
+        <strong>设备名称：</strong>@(Model.Subject)<br />
+        <strong>设备描述：</strong>@(Model.Body)
+    </div>
+
+    @if (Model.Type == PayOrderType.Borrow)
+    {
+        <form method="post" asp-controller="Pay" asp-action="Borrow">
+            <input name="id" value="@Model.EquipmentId" hidden />
+            <button class="btn btn-primary" style="margin-top:10px">
+                转到支付宝支付
+            </button>
+        </form>
+    }
+    else if (Model.Type == PayOrderType.Sold)
+    {
+        <form method="post" asp-controller="Pay" asp-action="Buy">
+            <input name="id" value="@Model.EquipmentId" hidden />
+            <button class="btn btn-primary" style="margin-top:20px">
+                转到支付宝支付
+            </button>
+        </form>
+    }
+</div>

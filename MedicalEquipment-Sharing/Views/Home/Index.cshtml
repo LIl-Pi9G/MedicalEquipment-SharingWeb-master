@@ -1,0 +1,121 @@
+﻿@model HomeShowViewModel
+@{
+    ViewData["Title"] = "主页";
+}
+@if (Model.EquipmentViewModels.Count == 0)
+{
+    <div class="display-4 text-center d-block" style="margin-top:100px">
+        <h1>还没有用户发布共享设备哦_(:3」∠)_</h1>
+    </div>
+}
+else
+{
+    <div class="text-center" style="margin-bottom:16px">
+        <form asp-controller="Search" asp-action="Search" method="post">
+            <a asp-controller="Search" asp-action="Filter"
+                    class="btn btn-outline-primary d-inline"
+                    style="vertical-align:middle; margin-right:8px">筛选</a>
+            <input type="text" name="SearchString" class="col-4 d-inline form-control"
+                    style="vertical-align:middle" title="搜索" />
+            <input type="image" alt="submit" src="~/SVG/search.svg"
+                    style="vertical-align:middle" />
+        </form>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            @foreach (var aEquipment in Model.EquipmentViewModels)
+            {
+                <div class="col-sm-12 col-md-6 col-lg-4 py-3 px-lg-5 ">
+                    <partial name="_EquipmentCard" model="aEquipment" />
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@if (Model.PageCount > 1)
+{
+    <div class="text-center" style="margin-top:30px">
+        @if (Model.Page - 1 > 0)
+        {
+            <a asp-action="Index" asp-route-page="@(Model.Page - 1)" class="btn btn-outline-primary">上一页</a>
+        }
+        @{ 
+            int OmitPageCount = 3;
+        }
+        @if (Model.PageCount > OmitPageCount + 2)
+        {
+            bool leftOmit = false, rightOmit = false;
+            for (int i = 1; i <= Model.PageCount; i++)
+            {
+                Units.OmitDire dire = Units.IsOmit(Model.Page, i, OmitPageCount, Model.PageCount);
+                if (dire == Units.OmitDire.Left)
+                {
+                    if (!leftOmit)
+                    {
+                        int ppPage;
+                        if (Model.Page == Model.PageCount)
+                        {
+                            ppPage = Model.Page - OmitPageCount - 1;
+                        }
+                        else
+                        {
+                            ppPage = Model.Page - OmitPageCount;
+                        }
+                        <a asp-action="Index" asp-route-page="@(Model.Page - OmitPageCount - 1)" class="btn btn-outline-primary">..</a>
+                        leftOmit = true;
+                    }
+                }
+                else if (dire == Units.OmitDire.Right)
+                {
+                    if (!rightOmit)
+                    {
+                        int nnPage;
+                        if (Model.Page == 1)
+                        {
+                            nnPage = Model.Page + OmitPageCount + 1;
+                        }
+                        else
+                        {
+                            nnPage = Model.Page + OmitPageCount;
+                        }
+                        <a asp-action="Index" asp-route-page="@(Model.Page + OmitPageCount + 1)" class="btn btn-outline-primary">..</a>
+                        rightOmit = true;
+                    }
+                }
+                else
+                {
+                    if (i != Model.Page)
+                    {
+                        <a asp-action="Index" asp-route-page="@i" class="btn btn-outline-primary">@i</a>
+                    }
+                    else
+                    {
+                        <a asp-action="Index" asp-route-page="@Model.Page" class="btn btn-primary">@i</a>
+                    }
+                }
+            }
+        }
+        else
+        {
+            for (int i = 1; i <= Model.PageCount; i++)
+            {
+                if (i != Model.Page)
+                {
+                    <a asp-action="Index" asp-route-page="@i" class="btn btn-outline-primary">@i</a>
+                }
+                else
+                {
+                    <a asp-action="Index" asp-route-page="@Model.Page" class="btn btn-primary">@i</a>
+                }
+            }
+        }
+
+
+        @if (Model.Page + 1 <= Model.PageCount)
+        {
+            <a asp-action="Index" asp-route-page="@(Model.Page + 1)" class="btn btn-outline-primary">下一页</a>
+        }
+    </div>
+}

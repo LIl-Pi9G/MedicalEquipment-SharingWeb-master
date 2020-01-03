@@ -1,0 +1,14 @@
+﻿@model MedicalEquipment_Sharing.ViewComponents.ComponentModels.LoginUserInfo
+<div class="d-sm-inline-flex flex-sm-row-reverse">
+    @if (Model.Logged == LoginStatus.NotLogin)
+    {
+        <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">登录</a>
+        <a class="nav-link text-dark" asp-controller="Account" asp-action="Sign">注册</a>
+    }
+    else
+    {
+        <a class="nav-link text-dark" asp-controller="Account" asp-action="Index">@Model.UserName</a>
+        <a class="nav-link text-dark" asp-controller="Equipment" asp-action="MyPurchase">购入管理</a>
+        <a class="nav-link text-dark" asp-controller="Equipment" asp-action="Index">我的设备</a>
+    }
+</div>

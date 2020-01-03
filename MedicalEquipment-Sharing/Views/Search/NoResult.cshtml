@@ -1,0 +1,13 @@
+﻿@model NoFoundEquipmentViewModel
+@{
+    ViewData["Title"] = "无结果";
+}
+@{
+    string showSearchStr = Units.JointString('、', Units.SplitString(Model.SearchString));
+} 
+<h1>没有找到与“@showSearchStr”匹配的设备</h1>
+<h4>您可以尝试搜索其他的字词。</h4>
+
+<hr />
+<a href="/">回到首页</a>
+

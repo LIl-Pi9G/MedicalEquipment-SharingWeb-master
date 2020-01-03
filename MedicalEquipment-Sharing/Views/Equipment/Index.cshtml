@@ -1,0 +1,34 @@
+﻿@model List<EquipmentViewModel>
+@{
+    ViewData["Title"] = "我的共享";
+}
+@if (Model.Count > 0)
+{
+	<h1 class="text-center">@(ViewBag.UserName)共享的设备</h1>
+}
+else
+{
+	<h1 class="text-center">@(ViewBag.UserName)没有共享设备</h1>
+}
+
+<div class="container">
+
+    <div class="text-left">
+        <a asp-action="Create" style="margin-left:33px" class="btn btn-primary">添加共享设备</a>
+        <a asp-action="MySharing" style="margin-left:33px" class="btn btn-outline-success">正在共享的设备</a>
+        <a asp-action="MyBorrow" style="margin-left:33px" class="btn btn-outline-info">正在借用的设备</a>
+    </div>
+
+    @if (Model.Count > 0)
+    {
+        <div class="row">
+            @foreach (var aEquipment in Model)
+            {
+                <div class="col-sm-12 col-md-6 col-lg-4 py-3 px-lg-5 ">
+                    <partial name="_EquipmentCard" model="aEquipment" />
+                </div>
+            }
+        </div>
+    }
+
+</div>

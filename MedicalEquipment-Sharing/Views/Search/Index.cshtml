@@ -1,0 +1,146 @@
+﻿@model HomeShowViewModel
+@{
+    ViewData["Title"] = "搜索";
+}
+@if (Model.EquipmentViewModels.Count != 0)
+{
+    string showSearchStr = Units.JointString('、', Units.SplitString(Model.SearchString));
+
+    <h3 class="modal-title text-md-left">“@showSearchStr”搜索结果如下:</h3>
+    <a href="/">返回首页</a>
+    <hr />
+
+    <div class="container">
+        <div class="row">
+            @foreach (var aEquipment in Model.EquipmentViewModels)
+            {
+                <div class="col-sm-12 col-md-6 col-lg-4 py-3 px-lg-5 ">
+                    <div class="card" style="width: 100%;">
+                        <img src="@aEquipment.ImageUrl" class="card-img-top">
+                        <div class="card-body">
+                            <h5 class="card-title">@aEquipment.Name</h5>
+                            <div class="card-text">
+                                类型：@(Units.GetEnumName(Html.GetEnumSelectList(typeof(EquipmentType)), aEquipment.Type))
+                            </div>
+                            <div class="card-text">
+                                租赁价格：@(aEquipment.Price.ToString())元/天
+                            </div>
+                            <div class="card-text">
+                                出售价格：@(aEquipment.SoldPrice.ToString())元
+                            </div>
+                            @if (aEquipment.Describe.Length > 26)
+                            {
+                                <div style="margin-top:6px; margin-bottom:8px" class="card-text">@aEquipment.Describe.Substring(0, 26)…</div>
+                            }
+                            else
+                            {
+                                <div style="margin-top:6px; margin-bottom:8px" class="card-text">@aEquipment.Describe</div>
+                            }
+                            <a asp-controller="Home" asp-action="Details" asp-route-id="@aEquipment.Id" target="_blank"
+                                    class="btn btn-primary btn-block">详情</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    @if (Model.PageCount > 1)
+    {
+        <div class="text-center" style="margin-top:30px">
+            @if (Model.Page - 1 > 0)
+            {
+                <a asp-action="Index" asp-route-page="@(Model.Page - 1)"
+                        asp-route-searchString="@Model.SearchString" class="btn btn-outline-primary">上一页</a>
+            }
+
+            @if (Model.PageCount > 5)
+            {
+                int OmitPageCount = 3;
+                bool leftOmit = false, rightOmit = false;
+                for (int i = 1; i <= Model.PageCount; i++)
+                {
+                    Units.OmitDire dire = Units.IsOmit(Model.Page, i, OmitPageCount, Model.PageCount);
+                    if (dire == Units.OmitDire.Left)
+                    {
+                        if (!leftOmit)
+                        {
+                            int ppPage;
+                            if (Model.Page == Model.PageCount)
+                            {
+                                ppPage = Model.Page - OmitPageCount - 1;
+                            }
+                            else
+                            {
+                                ppPage = Model.Page - OmitPageCount;
+
+                            }
+                            <a asp-action="Index" asp-route-page="@ppPage"
+                                    asp-route-searchString="@Model.SearchString" class="btn btn-outline-primary">..</a>
+                            leftOmit = true;
+                        }
+                    }
+                    else if (dire == Units.OmitDire.Right)
+                    {
+                        if (!rightOmit)
+                        {
+                            int nnPage;
+                            if (Model.Page == 1)
+                            {
+                                nnPage = Model.Page + OmitPageCount + 1;
+                            }
+                            else
+                            {
+                                nnPage = Model.Page + OmitPageCount;
+
+
+                            }
+                            <a asp-action="Index" asp-route-page="@nnPage"
+                                    asp-route-searchString="@Model.SearchString" class="btn btn-outline-primary">..</a>
+                            rightOmit = true;
+                        }
+                    }
+                    else
+                    {
+                        if (i != Model.Page)
+                        {
+                            <a asp-action="Index" asp-route-page="@i"
+                                    asp-route-searchString="@Model.SearchString" class="btn btn-outline-primary">@i</a>
+
+                        }
+                        else
+                        {
+                            <a asp-action="Index" asp-route-page="@Model.Page"
+                                    asp-route-searchString="@Model.SearchString" class="btn btn-primary">@i</a>
+                        }
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 1; i <= Model.PageCount; i++)
+                {
+                    if (i != Model.Page)
+                    {
+                        <a asp-action="Index" asp-route-page="@i"
+                                asp-route-searchString="@Model.SearchString" class="btn btn-outline-primary">@i</a>
+
+                    }
+                    else
+                    {
+                        <a asp-action="Index" asp-route-page="@Model.Page"
+                                asp-route-searchString="@Model.SearchString" class="btn btn-primary">@i</a>
+                    }
+                }
+            }
+
+
+
+            @if (Model.Page + 1 <= Model.PageCount)
+            {
+                <a asp-action="Index" asp-route-page="@(Model.Page + 1)"
+                   asp-route-searchString="@Model.SearchString" class="btn btn-outline-primary">下一页</a>
+            }
+        </div>
+    }
+}

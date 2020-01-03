@@ -1,0 +1,61 @@
+﻿@model List<EquipmentViewModel>
+@{
+    ViewData["Title"] = "借用中";
+}
+
+@if (Model.Count > 0)
+{
+    <h1 class="text-center">正在借用的设备</h1>
+}
+else
+{
+    <div class="text-center">
+        <h1 class="display-4">您没有借用任何设备</h1>
+    </div>
+}
+
+<div class="container">
+    <div class="text-left">
+        <a asp-action="Index" style="margin-left:33px" class="btn btn-primary">我的设备</a>
+        <a asp-action="MySharing" style="margin-left:33px" class="btn btn-outline-success">正在共享的设备</a>
+    </div>
+    @if (Model.Count > 0)
+    {
+        <div class="row">
+            @foreach (var aEquipment in Model)
+            {
+                <div class="col-sm-12 col-md-6 col-lg-4 py-3 px-lg-5 ">
+                    <div class="card" style="width: 100%;">
+                        <img src="@aEquipment.ImageUrl" class="card-img-top">
+                        <div class="card-body">
+                            <h5 class="card-title">@aEquipment.Name</h5>
+                            <p class="card-text">
+                                类型：@(Units.GetEnumName(Html.GetEnumSelectList(typeof(EquipmentType)), aEquipment.Type))
+                            </p>
+                            <p class="card-text">
+                                租赁价格：@(aEquipment.Price.ToString())元/天
+                            </p>
+                            @if (aEquipment.Describe.Length > 26)
+                            {
+                                <p class="card-text">@aEquipment.Describe.Substring(0, 26)…</p>
+                            }
+                            else
+                            {
+                                <p class="card-text">@aEquipment.Describe</p>
+                            }
+                            @{
+                                TimeSpan span = DateTime.Now.Subtract(aEquipment.SoldDate);
+                                string xDay = Convert.ToString(span.Days + 1);
+                            }
+                            <a asp-action="Details" asp-route-id="@aEquipment.Id"
+                                    asp-route-returnUrl="@System.Web.HttpUtility.UrlEncode("/Equipment/MyBorrow")"
+                                    class="btn btn-info btn-block">
+                                已借用@(xDay)天
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

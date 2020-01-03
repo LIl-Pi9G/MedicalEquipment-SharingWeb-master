@@ -1,0 +1,22 @@
+﻿@model EquipmentViewModel
+@{
+    ViewData["Title"] = "删除";
+}
+
+<h1 class="text-danger">确认删除？</h1>
+<h4 style="margin-top:8px; margin-bottom:30px" class="text-danger">删除后将无法恢复！</h4>
+
+<form method="post">
+    <div class="form-group row col-sm-12">
+        <button style="margin-right:10px;margin-top:10px; margin-bottom:10px; padding-right:30px; padding-left:30px" type="submit"
+                class="btn btn-danger">
+            删除
+        </button>
+        <a asp-action="Index"
+           style="margin-left:10px; margin-top:10px; margin-bottom:10px; padding-right:30px; padding-left:30px"
+           class="btn btn-primary">取消</a>
+    </div>
+</form>
+
+<hr />
+<partial name="_EquipmentDetails" model="@Model" />

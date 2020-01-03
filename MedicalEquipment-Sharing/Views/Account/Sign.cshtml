@@ -1,0 +1,59 @@
+﻿@model SignViewModel
+@{
+    ViewData["Title"] = "注册";
+}
+
+<h1>注册新账号</h1>
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <hr />
+            <div class="form-group">
+                <h5>
+                    <label asp-for="Email"></label>
+                </h5>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <h5>
+                    <label asp-for="UserName"></label>
+                </h5>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <h5>
+                    <label asp-for="TelePhone"></label>
+                </h5>
+                <input asp-for="TelePhone" class="form-control" />
+                <label style="font-size:89%">&lowast;请输入支付宝账号绑定的手机号，收益会转入此账号。</label>
+                <span asp-validation-for="TelePhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <h5>
+                    <label asp-for="Password"></label>
+                </h5>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <h5>
+                    <label asp-for="MulPassword"></label>
+                </h5>
+                <input asp-for="MulPassword" class="form-control" />
+                <span asp-validation-for="MulPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" asp-route-returnUrl="@(ViewData["ReturnUrl"])" class="btn col-md-4 btn-primary">注册</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <hr />
+        <a asp-action="Login" asp-route-returnUrl="@(ViewData["ReturnUrl"])">使用已有账户登录</a>
+    </div>
+</div>

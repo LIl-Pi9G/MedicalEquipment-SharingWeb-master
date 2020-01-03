@@ -1,0 +1,33 @@
+﻿@model EquipmentViewModel
+
+<div class="box-shadow d-inline-block"
+     style="float:right; width:46%; margin-top:20px; margin-bottom:100px">
+    <img src="@Model.ImageUrl" class="card-img-top" />
+</div>
+
+<div class="d-inline-block" style="float:left; width:50%; margin-bottom:100px">
+    <div>
+        <strong class="col-form-label" style="margin-top:20px">租赁价格：</strong><br />
+        <label>@(Model.Price.ToString()) 元/天</label>
+    </div>
+    <div>
+        <strong class="col-form-label" style="margin-top:20px">出售价格：</strong><br />
+        <label>@(Model.SoldPrice.ToString()) 元</label>
+    </div>
+    <div>
+        <strong class="col-form-label" style="margin-top:20px">原入手价：</strong><br />
+        <label>@(Model.OriginalPrice.ToString()) 元</label>
+    </div>
+    <div>
+        <strong class="col-form-label" style="margin-top:20px">类型：</strong><br />
+        <label>@(Units.GetEnumName(Html.GetEnumSelectList(typeof(EquipmentType)), Model.Type))</label>
+    </div>
+    <div>
+        <strong class="col-form-label" style="margin-top:20px">制造商：</strong><br />
+        <label>@(Units.GetEnumName(Html.GetEnumSelectList(typeof(EquipmentManufacturer)), Model.Manufacturer))</label>
+    </div>
+    <div>
+        <strong class="col-form-label" style="margin-top:20px">描述：</strong><br />
+        <label>@Model.Describe</label>
+    </div>
+</div>

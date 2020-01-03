@@ -1,0 +1,41 @@
+﻿@model EquipmentViewModel
+
+<div class="card" style="width: 100%;">
+    <img src="@Model.ImageUrl" class="card-img-top">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Name</h5>
+        <div class="card-text">
+            类型：@(Units.GetEnumName(Html.GetEnumSelectList(typeof(EquipmentType)), Model.Type))
+        </div>
+        <div class="card-text">
+            租赁价格：@(Model.Price.ToString())元/天
+        </div>
+        <div class="card-text">
+            出售价格：@(Model.SoldPrice.ToString())元
+        </div>
+        @if (Model.Describe.Length > 26)
+        {
+            <div style="margin-top:6px; margin-bottom:8px" class="card-text">@Model.Describe.Substring(0, 26)…</div>
+        }
+        else
+        {
+            <div style="margin-top:6px; margin-bottom:8px" class="card-text">@Model.Describe</div>
+        }
+        @if (Model.EquipmentState == OrderStatus.Holding)
+        {
+            <a asp-action="Details" asp-route-id="@Model.Id"
+                class="btn btn-primary btn-block">详情</a>
+
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary btn-block">编辑</a>
+            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger btn-block">删除</a>
+        }
+        else if (Model.EquipmentState == OrderStatus.Sharing)
+        {
+            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-success btn-block">共享中</a>
+        }
+        else if (Model.EquipmentState == OrderStatus.SoldOut)
+        {
+            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-danger btn-block">售罄</a>
+        }
+    </div>
+</div>

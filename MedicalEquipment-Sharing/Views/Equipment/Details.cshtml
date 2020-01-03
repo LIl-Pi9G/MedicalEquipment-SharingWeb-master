@@ -1,0 +1,72 @@
+﻿@model EquipmentViewModel
+@{
+    ViewData["Title"] = "详情";
+}
+
+<h2 style="margin-top:8px">
+    @(Model.Owner.UserName)共享的@(Model.Name)
+    @if (Model.EquipmentState == OrderStatus.Sharing)
+    {
+        TimeSpan span = DateTime.Now.Subtract(Model.SoldDate);
+        string xDay = Convert.ToString(span.Days + 1);
+        <label style="margin-left:8px; margin-right:8px" class="badge badge-pill badge-success">已共享@(xDay)天</label>
+    }
+    else if (Model.EquipmentState == OrderStatus.SoldOut)
+    {
+        if (Model.Buyer.Email.Equals(ViewBag.Email))
+        {
+            <label style="margin-left:8px; margin-right:8px" class="badge badge-pill badge-primary">已购入</label>
+        }
+        else
+        {
+            <label style="margin-left:8px; margin-right:8px" class="badge badge-pill badge-danger">已售出</label>
+        }
+    }
+</h2>
+@if (Model.EquipmentState != OrderStatus.Holding)
+{
+    if (Model.Buyer.Email.Equals(ViewBag.Email))
+    {
+        <p>
+            <h5>卖家<b style="margin:10px; font-size:91%">@(Model.Owner.UserName)</b>联系方式</h5>
+            <partial name="_UserContact" model="@Model.Owner" />
+        </p>
+    }
+    else
+    {
+        <p>
+            <h5>买家<b style="margin:10px; font-size:91%">@(Model.Buyer.UserName)</b>联系方式</h5>
+            <partial name="_UserContact" model="@Model.Buyer" />
+        </p>
+    }
+}
+<div>
+    <a href="@(ViewBag.ReturnUrl)" class="btn btn-primary"
+            style="margin:10px; padding-right:30px; padding-left:30px">返回</a>
+    @if (Model.EquipmentState == OrderStatus.Holding)
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id"
+                style="margin:10px; padding-right:30px; padding-left:30px"
+                class="btn btn-secondary">编辑</a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" onclick=""
+                style="margin:10px; padding-right:30px; padding-left:30px"
+                class="btn btn-danger">删除</a>
+    }
+    else if (Model.EquipmentState == OrderStatus.Sharing)
+    {
+        if (!Model.Owner.Email.Equals(ViewBag.Email))
+        {
+            <form method="post" asp-controller="Pay" asp-action="GiveBack" class="d-inline">
+                <input name="id" value="@Model.Id" hidden/>
+                <input type="submit" value="归还"
+                        style="margin:10px; padding-right:30px; padding-left:30px"
+                        onclick="return confirm('确定要归还吗?将会跳转到支付宝进行支付。')"
+                        class="btn btn-danger"/>
+            </form>
+        }
+    }
+</div>
+<hr />
+<div>
+    <partial name="_EquipmentDetails" model="@Model" />
+</div>

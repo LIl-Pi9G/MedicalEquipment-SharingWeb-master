@@ -1,0 +1,49 @@
+﻿@using MedicalEquipment_Sharing.Controllers
+@model FilterDataViewModel
+@{
+    ViewData["Title"] = "筛选";
+}
+<h2 class="modal-title text-md-left" style="margin-bottom:20px">筛选:</h2>
+<div class="text-left" style="margin-bottom:16px">
+    <form asp-controller="Search" asp-action="Filter" method="post">
+        <div class="form-group">
+            <label class="d-inline" style="vertical-align:middle; margin-right:8px">关键字</label>
+            <input asp-for="SearchString" class="col-6 d-inline form-control"
+                    style="vertical-align:middle" />
+            <input type="image" alt="submit" src="~/SVG/search.svg"
+                    style="vertical-align:middle" />
+            <select asp-for="SortType" asp-items="Html.GetEnumSelectList(typeof(SortType))"
+                    class="col-2 form-control d-inline"
+                    style="margin-left:46px; vertical-align:middle"></select>
+        </div>
+        <div class="form-group">
+            <label class="d-inline" style="vertical-align:middle; margin-right:8px">制造商</label>
+            <select asp-items="Html.GetEnumSelectList(typeof(EquipmentManufacturer))"
+                    asp-for="EquipmentManufacturer"
+                    class="col-2 form-control d-inline" style="vertical-align:middle">
+                <option value="@SearchController.SEARCH_ALL_VALUE">全部</option>
+            </select>
+            <label class="d-inline" style="vertical-align:middle; margin-right:8px; margin-left:22px">类型</label>
+            <select asp-items="Html.GetEnumSelectList(typeof(EquipmentType))"
+                    asp-for="EquipmentType"
+                    class="col-2 form-control d-inline" style="vertical-align:middle">
+                <option value="@SearchController.SEARCH_ALL_VALUE">全部</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="d-inline" style="vertical-align:middle; margin-right:8px">租赁价格区间</label>
+            &yen; <input asp-for="MinPrice" class="col-1 form-control d-inline" style="vertical-align:middle">
+            <label style="margin-left:8px; margin-right:8px">&minus;</label>
+            &yen; <input asp-for="MaxPrice" class="col-1 form-control d-inline" style="vertical-align:middle">
+            </div>
+        <div class="form-group">
+            <label class="d-inline" style="vertical-align:middle; margin-right:8px">购买价格区间</label>
+            &yen; <input asp-for="MinSoldPrice" class="col-1 form-control d-inline" style="vertical-align:middle">
+            <label style="margin-left:8px; margin-right:8px">&minus;</label>
+            &yen; <input asp-for="MaxSoldPrice" class="col-1 form-control d-inline" style="vertical-align:middle">
+        </div>
+    </form>
+</div>
+<hr />
+<a href="/">返回首页</a>

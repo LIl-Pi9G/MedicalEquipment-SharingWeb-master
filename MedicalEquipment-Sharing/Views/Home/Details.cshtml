@@ -1,0 +1,41 @@
+﻿@model EquipmentViewModel
+
+@{
+    ViewData["Title"] = "详情";
+}
+
+<h2 style="margin-top:8px">
+    @(Model.Owner.UserName)共享的@(Model.Name)
+</h2>
+
+<p>
+    <h5>卖家<b style="margin:10px; font-size:91%">@(Model.Owner.UserName)</b>联系方式</h5>
+    <partial name="_UserContact" model="@Model.Owner" />
+</p>
+
+@if (!Model.Owner.UserName.Equals(ViewBag.UserName))
+{
+    <form method="post" asp-controller="Pay" asp-action="Confirm" class="d-inline">
+        <input name="id" value="@Model.Id" hidden />
+        <input name="type" value="@PayOrderType.Borrow" hidden>
+        <button style="padding-left:20px; padding-right:20px" class="btn btn-success col-1">
+            借用
+        </button>
+    </form>
+
+    <form method="post" asp-controller="Pay" asp-action="Confirm" class="d-inline">
+        <input name="id" value="@Model.Id" hidden />
+        <input name="type" value="@PayOrderType.Sold" hidden>
+        <button style="margin-left:20px; padding-left:20px; padding-right:20px" class="btn btn-danger col-1">
+            购买
+        </button>
+    </form>
+
+    @await Component.InvokeAsync(nameof(MedicalEquipment_Sharing.ViewComponents.ShowDeposit))
+}
+
+<hr />
+
+<div>
+    <partial name="_EquipmentDetails" model="@Model" />
+</div>

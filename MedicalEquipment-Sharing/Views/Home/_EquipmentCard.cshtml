@@ -1,0 +1,27 @@
+﻿@model EquipmentViewModel
+
+<div class="card" style="width: 100%;">
+    <img src="@Model.ImageUrl" class="card-img-top">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Name</h5>
+        <div class="card-text">
+            类型：@(Units.GetEnumName(Html.GetEnumSelectList(typeof(EquipmentType)), Model.Type))
+        </div>
+        <div class="card-text">
+            租赁价格：@(Model.Price.ToString())元/天
+        </div>
+        <div class="card-text">
+            出售价格：@(Model.SoldPrice.ToString())元
+        </div>
+        @if (Model.Describe.Length > 26)
+        {
+            <div style="margin-top:6px; margin-bottom:8px" class="card-text">@Model.Describe.Substring(0, 26)…</div>
+        }
+        else
+        {
+            <div style="margin-top:6px; margin-bottom:8px" class="card-text">@Model.Describe</div>
+        }
+        <a asp-action="Details" asp-controller="Home" asp-route-id="@Model.Id" target="_blank"
+                class="btn btn-primary btn-block">详情</a>
+    </div>
+</div>
